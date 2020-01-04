@@ -10,6 +10,7 @@ class Pathfinding extends React.Component {
       nodeWidth: 30,
       nodeHeight: 30,
     }
+    this.renderTimes = 0;
     this.isDrawing = false;
     this.mouseEvents = {
       down: 'mousedown',
@@ -19,13 +20,6 @@ class Pathfinding extends React.Component {
     }
     this.NodesRef = {}
     this.RefMatrix = null;
-    // this.setNodeReference = (element) => {
-    //   console.log(element)
-    //   this.NodesRef[`${element.props.nodePos}`] = element.props.nodePos;
-    // }
-  }
-  toggleNode = () => {
-    console.log(this)
   }
 
   initNodeMatrix = (cols, rows) => {
@@ -35,16 +29,17 @@ class Pathfinding extends React.Component {
       matrix[i] = new Array(cols);
       this.RefMatrix[i] = new Array(cols);
       for (let j = 0; j < cols; j++){
-        if (i === Math.floor(rows/2) && j === Math.floor(cols/5)){
+        if (i === Math.floor(rows/5) && j === Math.floor(cols/2)){
           this.RefMatrix[i][j] = <Node nodePos={"init-point"} key={"node"+i+j}></Node>;
           matrix[i][j] = this.RefMatrix[i][j] ;
         } else {
-          this.RefMatrix[i][j] = <Node wall={this.toggleNode} toggle={this.toggleNode} nodePos={"normal-"+i+"-"+j} key={"node"+i+j}></Node>;
+          this.RefMatrix[i][j] = <Node nodePos={"normal-"+i+"-"+j} key={"node"+i+j}></Node>;
           matrix[i][j] = this.RefMatrix[i][j];
         }
       }
       matrix[i] = React.createElement('div', {className: 'row', key: i}, matrix[i]);
     }
+    console.log(this.RefMatrix)
     return matrix;
   }
   setNodeMatrix = () => {
@@ -64,22 +59,25 @@ class Pathfinding extends React.Component {
     } else if (mouseEv === up || mouseEv === leave) {
       this.isDrawing = false;
     } else if (mouseEv === move){
-      if (this.isDrawing){
+      let node = e.target.className.split(" ");
+      if (this.isDrawing && node[0] == 'node'){
         console.log('inside')
-        // console.log(e.target.className)
-        let node = e.target.className.split(" ");
-        if (node[0] == 'node') {
-          let x = node[1].split("-")[1];
-          let y = node[1].split("-")[2];
-          console.log(this.RefMatrix[x][y]);
-        }
+        // let x = node[1].split("-")[1];
+        // let y = node[1].split("-")[2];
       }
     }
   }
   render() {
     console.log("here")
     return ( 
-      <div onMouseDown={this.handleDrawing} onMouseMove={this.handleDrawing} onMouseUp={this.handleDrawing} onMouseLeave={this.handleDrawing} className="node-matrix">{this.setNodeMatrix()}</div>
+      <div 
+        onMouseDown={this.handleDrawing}
+        onMouseMove={this.handleDrawing} 
+        onMouseUp={this.handleDrawing} 
+        onMouseLeave={this.handleDrawing} 
+        className="node-matrix">
+          {this.setNodeMatrix()}
+      </div>
     )
   }
 }

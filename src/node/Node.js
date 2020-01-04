@@ -33,9 +33,7 @@ class Node extends React.Component {
 }
 
 Node.propTypes = {
-  nodePos: PropTypes.string.isRequired,
-  toggle: PropTypes.func,
-  wall: PropTypes.string
+  nodePos: PropTypes.string.isRequired
 }
 
 export default Node;
