@@ -1,0 +1,24 @@
+.node {
+  width: 30px;
+  height: 30px;
+  border: .5px solid black;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  cursor: pointer;
+}
+
+.wall {
+  background-color: black;
+}
+/* [class*="normal"]:hover {
+  background-color: rgba(255, 0, 0, 0.6);
+} */
+.init-point {
+  background-image: url('../assets/icons/end.svg');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.init-point:active {
+  background-size: 26px 26px;
+}
