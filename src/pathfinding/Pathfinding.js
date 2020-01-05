@@ -67,11 +67,12 @@ class Pathfinding extends React.Component {
       }
       console.log(Math.floor(cols*x));
       for (let j = 0; j < Math.floor(cols*x); j++){
-        let initPoint = i === Math.floor(rows/2) && j === Math.floor(cols/10);
-        let endPoint = false;
+        let initPoint = i === Math.floor(rows/2) && j === Math.floor(cols*0.1);
+        let endPoint =  i === Math.floor(rows/2) && j === Math.floor(cols*0.8);
         if (initPoint){
           matrix[i][j] =  <Node nodePos={"init-point"} zInd={i+j} key={`node${i}${j}`}></Node>
         } else if (endPoint){
+          console.log("endpoint")
           matrix[i][j] = <Node nodePos={'end-point'} zInd={i+j} key={`node${i}${j}`}></Node>;
         } else {
           matrix[i][j] = <Node nodePos={`normal${i}${j}`} zInd={i+j} key={`node${i}${j}`}></Node>;

@@ -1,4 +1,4 @@
-
+/* Node */
 .node {
   background: #000;
   color: #575757;
@@ -38,6 +38,7 @@
   transform: skewY(-45deg);
 }
 
+/* Wall */
 .wall {
   background: #ff0000;
   color: #fffcfb;
@@ -57,8 +58,70 @@
   top: 0.5em;
   left: -1em;
 }
- .wall:after {
+.wall:after {
   background: #bb1515;
+  width: 1em;
+  bottom: -2.5em;
+  left: 1em;
+  height: 4em;
+}
+
+/* init point */
+.init-point {
+  background-color: #0e65e5;
+  border: 1px solid black;
+  background-image: url("../assets/icons/pacman.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: translate(0.9em, -0.9em);
+  transition: all 0.25s linear;
+  box-shadow: -2em 2em 0 #e1e1e1;
+}
+
+.init-point:before,
+.init-point:after {
+  transition: all 0.25s linear;
+}
+
+.init-point:before {
+  background: rgb(58, 6, 170);
+  width: 1em;
+  top: 0.5em;
+  left: -1em;
+}
+.init-point:after {
+  background: rgb(58, 6, 170);
+  width: 1em;
+  bottom: -2.5em;
+  left: 1em;
+  height: 4em;
+}
+
+/* End point */
+.end-point {
+  background-color: #fdd835;
+  border: 1px solid black;
+  background-image: url("../assets/icons/ghost.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: translate(0.9em, -0.9em);
+  transition: all 0.25s linear;
+  box-shadow: -2em 2em 0 #e1e1e1;
+}
+
+.end-point:before,
+.end-point:after {
+  transition: all 0.25s linear;
+}
+
+.end-point:before {
+  background: #b19723;
+  width: 1em;
+  top: 0.5em;
+  left: -1em;
+}
+.end-point:after {
+  background: #b19723;
   width: 1em;
   bottom: -2.5em;
   left: 1em;
