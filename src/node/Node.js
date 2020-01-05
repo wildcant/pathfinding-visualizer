@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import './node.css';
 
 const Node = (props) => {
-  return (<div className={'node ' + props.nodePos}></div>)
+  const { nodePos, zInd } = props;
+  return (<div className={'node ' + nodePos} style={{zIndex: zInd*-1}}></div>)
 }
+
 
 Node.propTypes = {
   nodePos: PropTypes.string.isRequired

@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 import Node from '../node/Node';
-import './pathfinding.css';
 import { withWindowSize } from 'react-fns';
-
+import './pathfinding.css';
+  
 class Pathfinding extends React.Component {
   constructor(props){
     super(props);
@@ -10,9 +10,10 @@ class Pathfinding extends React.Component {
       matrix: []
     }
     this.nodeAtrr = {
-      nodeWidth: 30,
-      nodeHeight: 30,
+      nodeWidth: 60,
+      nodeHeight: 60,
     }
+    this.orientation = 'start';
     this.isDrawing = false;
     this.previousNode = null;
     this.mouseEvents = {
@@ -51,20 +52,32 @@ class Pathfinding extends React.Component {
   }
   initNodeMatrix = (cols, rows) => {
     let matrix = new Array(rows);
-    for (let i = 0; i < rows; i++) {
+    let delta = 1/(rows/2);
+    let x = 0;
+    for (let i = 0; i < rows*2; i++) {
       matrix[i] = new Array(cols);
-      for (let j = 0; j < cols; j++){
-        let initPoint = i === Math.floor(rows/5) && j === Math.floor(cols/2);
+      if (i < Math.floor(rows*2/4)) {
+        this.orientation = 'start';
+        x +=delta;
+      } else if (i > Math.floor(rows*3/4)) {
+        this.orientation = 'end';
+        x-=delta;
+      } else {
+        x = 0.98;
+      }
+      console.log(Math.floor(cols*x));
+      for (let j = 0; j < Math.floor(cols*x); j++){
+        let initPoint = i === Math.floor(rows/2) && j === Math.floor(cols/10);
         let endPoint = false;
         if (initPoint){
-          matrix[i][j] =  <Node nodePos={"init-point"} key={`node${i}${j}`}></Node>
+          matrix[i][j] =  <Node nodePos={"init-point"} zInd={i+j} key={`node${i}${j}`}></Node>
         } else if (endPoint){
-          matrix[i][j] = <Node nodePos={'end-point'} key={`node${i}${j}`}></Node>;
+          matrix[i][j] = <Node nodePos={'end-point'} zInd={i+j} key={`node${i}${j}`}></Node>;
         } else {
-          matrix[i][j] = <Node nodePos={`normal${i}${j}`} key={`node${i}${j}`}></Node>;
+          matrix[i][j] = <Node nodePos={`normal${i}${j}`} zInd={i+j} key={`node${i}${j}`}></Node>;
         }
       }
-      matrix[i] = React.createElement('div', {className: 'row', key: i}, matrix[i]);
+      matrix[i] = React.createElement('div', {className: 'row '+ this.orientation, key: i}, matrix[i]);
     }
     return matrix;
   }
@@ -72,22 +85,22 @@ class Pathfinding extends React.Component {
     const { nodeWidth, nodeHeight } = this.nodeAtrr;
     let {width, height} = this.props;
     let cols = Math.floor(width/nodeWidth);
-    let rows = Math.floor(height*0.6/nodeHeight);
+    let rows = Math.floor(height/nodeHeight);
+    console.log(cols, rows);
     let matrix = this.initNodeMatrix(cols, rows);
     return matrix;
   }
   render() {
     return ( 
       <div 
-        onMouseDown={this.handleDrawing}
-        onMouseMove={this.handleDrawing} 
-        onMouseUp={this.handleDrawing} 
-        onMouseLeave={this.handleDrawing} 
-        className="node-matrix">
+      onMouseDown={this.handleDrawing}
+      onMouseMove={this.handleDrawing} 
+      onMouseUp={this.handleDrawing} 
+      onMouseLeave={this.handleDrawing}
+        className="matrix">
           {this.setNodeMatrix()}
       </div>
     )
   }
 }
-
 export default withWindowSize(Pathfinding);

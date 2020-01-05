@@ -1,9 +1,19 @@
-.node-matrix {
-  padding: 0;
-  margin: 0;
+body {
+  background: #f2f2f2;
+}
+
+.matrix {
+  display: flex;
+  flex-direction: column;
 }
 .row {
   display: flex;
   flex-direction: row;
-  width: 94%;
+  transform: rotate(-26deg) skew(20deg, 5deg);
+}
+.start {
+  justify-content: flex-start;
+}
+.end {
+  justify-content: flex-end;
 }

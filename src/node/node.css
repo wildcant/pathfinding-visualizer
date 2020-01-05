@@ -1,24 +1,66 @@
+
 .node {
-  width: 30px;
-  height: 30px;
-  border: .5px solid black;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  cursor: pointer;
+  background: #000;
+  color: #575757;
+  text-align: center;
+  height: 2.5em;
+  width: 4em;
+  line-height: 2.5em;
+  border: 1px solid rgb(168, 168, 168);
+  position: relative;
+  display: block;
+  text-decoration: none;
+  box-shadow: -2em 1.5em 0 #e1e1e1;
+  transition: all 0.25s linear;
+}
+
+.node:before,
+.node:after {
+  content: "";
+  position: absolute;
+  transition: all 0.25s linear;
+  width: 0.5em;
+}
+
+.node:after {
+  height: 4em;
+  background: #181818;
+  bottom: -2.25em;
+  left: 1.5em;
+  transform: rotate(90deg) skew(0, 45deg);
+}
+
+.node:before {
+  height: 2.5em;
+  background: #121212;
+  top: 0.25em;
+  left: -0.5em;
+  transform: skewY(-45deg);
 }
 
 .wall {
-  background-color: black;
+  background: #ff0000;
+  color: #fffcfb;
+  transform: translate(0.9em, -0.9em);
+  transition: all 0.25s linear;
+  box-shadow: -2em 2em 0 #e1e1e1;
 }
-/* [class*="normal"]:hover {
-  background-color: rgba(255, 0, 0, 0.6);
-} */
-.init-point {
-  background-image: url('../assets/icons/end.svg');
-  background-repeat: no-repeat;
-  background-position: center center;
+
+.wall:before,
+.wall:after {
+  transition: all 0.25s linear;
 }
-.init-point:active {
-  background-size: 26px 26px;
+
+.wall:before {
+  background: #bb1515;
+  width: 1em;
+  top: 0.5em;
+  left: -1em;
+}
+ .wall:after {
+  background: #bb1515;
+  width: 1em;
+  bottom: -2.5em;
+  left: 1em;
+  height: 4em;
 }
