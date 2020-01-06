@@ -9,7 +9,7 @@ body {
 .row {
   display: flex;
   flex-direction: row;
-  transform: rotate(-26deg) skew(20deg, 5deg);
+  transform: rotate(-22deg) skew(20deg, 5deg);
 }
 .start {
   justify-content: flex-start;
