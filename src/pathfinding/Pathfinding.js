@@ -5,9 +5,10 @@ import './pathfinding.css';
 class Pathfinding extends React.Component {
   constructor(props){
     super(props);
-    this.matrix= [];
     this.state = {
-      matrix: null
+      matrix: [],
+      sourceNode: [],
+      endNode: []
     }
     this.nodeSize = {
       nodeWidth: 80,
@@ -22,8 +23,22 @@ class Pathfinding extends React.Component {
       leave: 'mouseleave'
     }
   }
+
+  Dijkstra = ({matrix, sourceNode, endNode}) => {
+    let neighbors = this.getNeighborsNodes(sourceNode);
+  }
+
+  getNeighborsNodes = () => {}
+
+  visitNode = (nodePos) => {
+    let matrix = this.state.matrix;
+    const [i, j] = nodePos.split(" ");
+    let updatedNode = this.createNode(nodePos, i, j, true);
+    matrix[i][j] = updatedNode;
+    this.setState(matrix)
+  }
   setWall = (currentNode) => {
-    let isNormal = currentNode.className.search('normal')  !== -1;
+    let isNormal = currentNode.className.search(/[0-9]/)  !== -1;
     if (this.isDrawing && isNormal && currentNode !== this.previousNode){
       let isWall = currentNode.className.search('wall') !== -1;
       if (isWall)
@@ -48,66 +63,76 @@ class Pathfinding extends React.Component {
       this.setWall(currentNode);
     }
   }
-  createNode = (nodePos, i, j) => {
-    return <Node nodePos={nodePos} zInd={i+j} key={`node${i}${j}`}></Node>;
+  createNode = (nodePos, i, j, visited) => {
+    if (nodePos =='init-point')
+      return <Node nodePos={nodePos} dist={1} zInd={i+j} key={`node${i}${j}`}></Node>;
+    return <Node nodePos={nodePos} dist={Infinity} visited={visited} parent={null} zInd={i+j} key={`node${i}${j}`}></Node>;
   }
 
   initNodeMatrix = (cols, rows) => {
     let matrix = new Array(rows);
     let delta = 1/(rows/2);
     let x = 0;
+    let endNode, sourceNode;
     for (let i = 0; i < rows; i++) {
-      matrix[i] = new Array(cols);
-      if (i < Math.floor(rows*3/5)) {x +=delta} 
-      else if (i > Math.floor(rows*3/5)) {x-=delta} 
-      else {x = 1}
-      for (let j = 0; j < Math.ceil(cols*x); j++){
+      if (i < Math.floor(rows*3/5))
+        x +=delta
+      else
+        x-=delta 
+      let currentColSize = Math.ceil(cols*x);
+      matrix[i] = new Array(currentColSize);
+      for (let j = 0; j < currentColSize; j++){
         let initPoint = i === Math.floor(rows/2) && j === Math.floor(cols*0.1);
         let endPoint =  i === Math.floor(rows/2) && j === Math.floor(cols*0.9);
-        if (initPoint)
+        if (initPoint){
+          sourceNode = [i, j];
           matrix[i][j] =  this.createNode('init-point', i, j);
-        else if (endPoint)
+        }
+        else if (endPoint){
+          endNode = [i, j];
           matrix[i][j] = this.createNode('end-point', i, j);
+        }
         else
-          matrix[i][j] = this.createNode(`normal${i}${j}`, i, j);
+          matrix[i][j] = this.createNode(`${i} ${j}`, i, j, false);
       }
     }
-    return matrix;
+    return {matrix, sourceNode, endNode};
   }
   
-  setNodeMatrix = (height, width) => {
+  setNodeMatrix = () => {
+    const {innerHeight, innerWidth} = window;
     const { nodeWidth, nodeHeight } = this.nodeSize;
-    let cols = Math.floor(width/nodeWidth);
-    let rows = Math.floor(height/nodeHeight)*2;
-    let matrix = this.initNodeMatrix(cols, rows);
-    return matrix;
+    let cols = Math.floor(innerWidth/nodeWidth);
+    let rows = Math.floor(innerHeight/nodeHeight)*2;
+    let nodesState = this.initNodeMatrix(cols, rows);
+    this.setState(nodesState);
   }
 
   handleResize = () => {
-    const {innerHeight, innerWidth} = window;
-    let matrix= this.setNodeMatrix(innerHeight, innerWidth);
-    this.setState({matrix: matrix})
+    this.setNodeMatrix();
   } 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize)
-    const {innerHeight, innerWidth} = window;
-    let matrix= this.setNodeMatrix(innerHeight, innerWidth);
-    this.setState({matrix: matrix})
+    this.setNodeMatrix();
   }
   render() {
+    console.log(this.state.matrix);
     return ( 
-      <div 
-      onMouseDown={this.handleDrawing}
-      onMouseMove={this.handleDrawing} 
-      onMouseUp={this.handleDrawing} 
-      onMouseLeave={this.handleDrawing}
-        className="matrix">
-          {this.state.matrix === null ? 'Loading' :
-          this.state.matrix.map((row, rowId, rows) => {
-            if (rowId > rows.length/2)
-              return <div className='row end' key={rowId}>{row}</div>
-            return <div className='row start' key={rowId}>{row}</div>
-          })}
+      <div>
+        <div onClick={() => this.visitNode('0 0')}>Visit node</div>
+          <div 
+          onMouseDown={this.handleDrawing}
+          onMouseMove={this.handleDrawing} 
+          onMouseUp={this.handleDrawing} 
+          onMouseLeave={this.handleDrawing}
+            className="matrix">
+              {this.state.matrix === null ? 'Loading' :
+              this.state.matrix.map((row, rowId, rows) => {
+                if (rowId > rows.length/2)
+                  return <div className='row end' key={rowId}>{row}</div>
+                return <div className='row start' key={rowId}>{row}</div>
+              })}
+        </div>
       </div>
     )
   }

@@ -126,3 +126,32 @@
   left: 1em;
   height: 4em;
 }
+
+/* Visit node */
+/* Wall */
+.visited {
+  background: #00ff00;
+  color: #fffcfb;
+  transform: translate(0.9em, -0.9em);
+  transition: all 0.25s linear;
+  box-shadow: -2em 2em 0 #e1e1e1;
+}
+
+.visited:before,
+.visited:after {
+  transition: all 0.25s linear;
+}
+
+.visited:before {
+  background: #0d8b0d;
+  width: 1em;
+  top: 0.5em;
+  left: -1em;
+}
+.visited:after {
+  background: #0d8b0d;
+  width: 1em;
+  bottom: -2.5em;
+  left: 1em;
+  height: 4em;
+}
