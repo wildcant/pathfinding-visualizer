@@ -35,7 +35,9 @@ class Pathfinding extends React.Component {
       if (closestNode.dist === Infinity) return visitedNodes;
       // if (closestNode.nodePos === endNode.props.nodePos) return visitedNodes;
       if (closestNode.nodePos === endNode.props.nodePos) break;
-      this.visitNode(closestNode)
+      setTimeout(() => {
+        this.visitNode(closestNode)
+      }, 200);
       visitedNodes.push(closestNode);
       unvisitedNodes = this.updateUnvisitedNodes(closestNode, matrix, unvisitedNodes);
     }
