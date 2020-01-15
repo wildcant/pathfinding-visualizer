@@ -7,8 +7,8 @@ class Pathfinding extends React.Component {
     super(props);
     this.state = {
       matrix: [],
-      sourceNode: [],
-      endNode: []
+      sourceNode: null,
+      endNode: null
     }
     this.nodeSize = {
       nodeWidth: 80,
@@ -25,26 +25,69 @@ class Pathfinding extends React.Component {
   }
 
   Dijkstra = ({matrix, sourceNode, endNode}) => {
-    let neighbors = this.getNeighborsNodes(sourceNode);
+    let unvisitedNodes = this.getAllNodes(matrix);
+    /*
+    while(!!unvisitedNodes.length) {
+      unvisitedNodes = this.sortNodes(unvisitedNodes);
+      const closestNode = unvisitedNodes.shift();
+      if (closestNode.isWall) continue;
+
+    }
+    */
   }
 
-  getNeighborsNodes = () => {}
+  sortNodes = (nodes) => {
+    nodes.sort((node_a, node_b) => {return node_a-node_b})
+    return nodes;
+  }
 
-  visitNode = (nodePos) => {
-    let matrix = this.state.matrix;
+  getAllNodes = (matrix) => {
+    const nodes = [];
+    for (const row of matrix) {
+      for (const el of row) {
+        nodes.push(el.props)
+      }
+    }
+    return nodes;
+  }
+
+  getNeighborsNodes = (parentNode, matrix) => {
+    const nodePos = parentNode.props.nodePos;
     const [i, j] = nodePos.split(" ");
-    let updatedNode = this.createNode(nodePos, i, j, true);
+    if (i < 0 && i > matrix.length && j < 0 && j > matrix[i].length) {
+    }
+  }
+
+  visitNode = (nodePos, matrix) => {
+    const [i, j] = nodePos.split(" ");
+    let updatedNode = this.createNode(nodePos, i, j, true, false);
     matrix[i][j] = updatedNode;
     this.setState(matrix)
   }
   setWall = (currentNode) => {
     let isNormal = currentNode.className.search(/[0-9]/)  !== -1;
     if (this.isDrawing && isNormal && currentNode !== this.previousNode){
+      let i = parseInt(currentNode.classList[1]);
+      let j = parseInt(currentNode.classList[2]);
+      if (!j && j!==0)
+        j=i;
+      if (!!this.state.matrix[i][j]) {
+        if (!!this.state.matrix[i][j].props.specialNode) {
+          return;
+        }
+      }
       let isWall = currentNode.className.search('wall') !== -1;
-      if (isWall)
-        currentNode.classList.remove("wall")
-      else
-        currentNode.classList.add("wall")
+      if (isWall) {
+        let matrix = this.state.matrix;
+        let updatedNode = this.createNode(`${i} ${j}`, i, j, false, false);
+        matrix[i][j] = updatedNode;
+        this.setState({matrix})
+      } else {
+        let matrix = this.state.matrix;
+        let updatedNode = this.createNode(`${i} ${j}`, i, j, false, true);
+        matrix[i][j] = updatedNode;
+        this.setState({matrix})
+      }
       this.previousNode = currentNode
     }
   }
@@ -63,10 +106,10 @@ class Pathfinding extends React.Component {
       this.setWall(currentNode);
     }
   }
-  createNode = (nodePos, i, j, visited) => {
-    if (nodePos =='init-point')
-      return <Node nodePos={nodePos} dist={1} zInd={i+j} key={`node${i}${j}`}></Node>;
-    return <Node nodePos={nodePos} dist={Infinity} visited={visited} parent={null} zInd={i+j} key={`node${i}${j}`}></Node>;
+  createNode = (nodePos, i, j, visited, isWall, specialNode) => {
+    if (!!specialNode)
+      return <Node specialNode={specialNode} nodePos={nodePos} dist={specialNode===' init-point' ? 0 : Infinity} zInd={i+j} key={`node${i}${j}`} wall={isWall}></Node>;
+    return <Node nodePos={nodePos} dist={Infinity} visited={visited} parent={null} zInd={i+j} key={`node${i}${j}`} wall={isWall}></Node>;
   }
 
   initNodeMatrix = (cols, rows) => {
@@ -85,15 +128,15 @@ class Pathfinding extends React.Component {
         let initPoint = i === Math.floor(rows/2) && j === Math.floor(cols*0.1);
         let endPoint =  i === Math.floor(rows/2) && j === Math.floor(cols*0.9);
         if (initPoint){
-          sourceNode = [i, j];
-          matrix[i][j] =  this.createNode('init-point', i, j);
+          matrix[i][j] =  this.createNode(`${i} ${j}`, i, j, false, false, ' init-point');
+          sourceNode = matrix[i][j];
         }
         else if (endPoint){
-          endNode = [i, j];
-          matrix[i][j] = this.createNode('end-point', i, j);
+          matrix[i][j] = this.createNode(`${i} ${j}`, i, j, false, false, ' end-point');
+          endNode = matrix[i][j];
         }
         else
-          matrix[i][j] = this.createNode(`${i} ${j}`, i, j, false);
+          matrix[i][j] = this.createNode(`${i} ${j}`, i, j, false, false);
       }
     }
     return {matrix, sourceNode, endNode};
@@ -116,10 +159,10 @@ class Pathfinding extends React.Component {
     this.setNodeMatrix();
   }
   render() {
-    console.log(this.state.matrix);
     return ( 
       <div>
-        <div onClick={() => this.visitNode('0 0')}>Visit node</div>
+        {/* <div onClick={() => this.visitNode('0 0')}>Visit node</div> */}
+        <div onClick={() => this.Dijkstra(this.state)}>Visit node</div>
           <div 
           onMouseDown={this.handleDrawing}
           onMouseMove={this.handleDrawing} 
