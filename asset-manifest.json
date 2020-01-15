@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/pathfinding-visualizer/static/css/main.7e9cba82.chunk.css",
+    "main.js": "/pathfinding-visualizer/static/js/main.81a2a5bb.chunk.js",
+    "main.js.map": "/pathfinding-visualizer/static/js/main.81a2a5bb.chunk.js.map",
+    "runtime-main.js": "/pathfinding-visualizer/static/js/runtime-main.74f3d907.js",
+    "runtime-main.js.map": "/pathfinding-visualizer/static/js/runtime-main.74f3d907.js.map",
+    "static/js/2.ec1e9fa3.chunk.js": "/pathfinding-visualizer/static/js/2.ec1e9fa3.chunk.js",
+    "static/js/2.ec1e9fa3.chunk.js.map": "/pathfinding-visualizer/static/js/2.ec1e9fa3.chunk.js.map",
+    "index.html": "/pathfinding-visualizer/index.html",
+    "precache-manifest.362b636513a3a4d442a8b958093ec307.js": "/pathfinding-visualizer/precache-manifest.362b636513a3a4d442a8b958093ec307.js",
+    "service-worker.js": "/pathfinding-visualizer/service-worker.js",
+    "static/css/main.7e9cba82.chunk.css.map": "/pathfinding-visualizer/static/css/main.7e9cba82.chunk.css.map",
+    "static/js/2.ec1e9fa3.chunk.js.LICENSE": "/pathfinding-visualizer/static/js/2.ec1e9fa3.chunk.js.LICENSE",
+    "static/media/index.css": "/pathfinding-visualizer/static/media/Handlee-Regular.27f813ca.ttf",
+    "static/media/node.css": "/pathfinding-visualizer/static/media/pacman.6733d38d.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.74f3d907.js",
+    "static/js/2.ec1e9fa3.chunk.js",
+    "static/css/main.7e9cba82.chunk.css",
+    "static/js/main.81a2a5bb.chunk.js"
+  ]
+}
